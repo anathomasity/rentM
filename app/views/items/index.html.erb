@@ -1,0 +1,20 @@
+<table>
+	<thead>
+		<tr><th>Item</th><th>Description</th><th>Price</th><th>Start Date</th><th>Days</th><th>Add to Cart</th></tr>
+	</thead>
+	<tbody>
+	<% @items.each do |i|%>
+	<tr><td><%= i.name %></td><td><%= i.description %></td><td>$<%= i.price %></td>
+	<form action="/add_to_cart" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			<td><input type="date" name="start"></td>
+			<td><input type="number" name="days"></td>
+			<input type="hidden" name="item_id" value="<%= i.id %>">
+			<td><input type="submit" name="submit" value="Add to Cart">
+		</form></td></tr>
+	<%end%>
+	</tbody>
+
+</table>
+
+<a href="/charges/new">Go to cart</a>

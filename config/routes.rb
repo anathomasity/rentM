@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
   get '/categories' => 'categories#index'
   get '/categories/:id' => 'categories#show'
+
+  resources :charges
+
+get '/items' => 'items#index'
+post '/add_to_cart' => 'items#create'
+get '/redo' => 'items#destroy'
+get '/scheduler' => 'items#scheduler'
+get '/destroy' => 'items#destroy'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item_id: 
+  days: 1
+  start: 2016-06-28
+
+two:
+  item_id: 
+  days: 1
+  start: 2016-06-28
