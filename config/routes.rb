@@ -28,13 +28,15 @@ Rails.application.routes.draw do
   resources 'items'
   resources 'categories'
   resources 'results'
+  resources 'charges'
 
   root 'items#index'
 
-  resources :charges
+  # resources :charges
 
 get '/items' => 'items#index'
 post '/add_to_cart' => 'items#add_to_cart'
+patch '/edit_cart/:id' => 'items#edit_cart'
 get '/scheduler' => 'items#scheduler'
 get '/destroy' => 'items#destroy'
 

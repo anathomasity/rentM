@@ -1,24 +1,58 @@
 <div class="container">
-	<br>
-	<br>
+	<br><br>
 	<div class="col-md-12 ">
 		<% if @search %>
 			<% @search.each do |s| %>
 					<div class="col-md-3 ">
 						<div class="well box clearfix">
-							<a href="">
+							<a href="/items/<%= s.id %>">
 								<img src="<%= s.image %>">
 								<h4><%= s.name %></h4>
 								<p><%= s.description %></p>
 								<p>$ <%= s.price %> /day</p>
 								<form action="/results" method="post">
-									<a type= "submit" name = "link" href=""><%= s.category.name.capitalize %></a>
+									<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+									<input type="hidden" name="catName" value="<%= s.category.id %>">
+									<a href="#" onclick="$(this).closest('form').submit(); return false;"><%= s.category.name.capitalize %></a>
+
 								</form>
-								
 							</a>
 							<br>
-							<a href="" class="btn btn-info pull-right">Add to Cart</a>
+							<button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target=".promo<%=s.id %>">Add To Cart</button>
 						</div>
+						<div class="modal fade promo<%=s.id %>" id="myModal" role="dialog">
+						    <div class="modal-dialog">
+						      <!-- Modal content-->
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Choose a date and the number of days</h4>
+						        </div>
+						        <form class="form" action="/add_to_cart" method="post">
+							        <div class="modal-body">
+							            <fieldset class="form-group">
+								  			<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+								  		</fieldset>
+								  		<fieldset class="form-group">
+								  			<input type="hidden" name="item_id" value="<%=s.id%>">
+								  		</fieldset>
+								  		<fieldset class="form-group">
+								  			<label>Date</label>
+											<input class="form-control" type="date" name="start">
+										</fieldset>
+										<fieldset class="form-group">
+											<label>Days</label>
+											<input class="form-control" type="number" name="days">
+										</fieldset>
+							        </div>
+							        <div class="modal-footer">
+							          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							          <input class="btn btn-success" type="submit" name="submit" value="Add to Cart">
+							        </div>
+						        </form>
+						      </div>
+						    </div>
+				  		</div>
 					</div>
 			<% end %>
 		<% end %>	

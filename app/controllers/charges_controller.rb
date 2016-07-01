@@ -25,6 +25,11 @@ class ChargesController < ApplicationController
 		@cart = Cart.all
 	end
 
+	def destroy
+		Cart.find(params[:id]).destroy
+		redirect_to '/charges/new'
+	end
+
 	def create
 	  # Amount in cents
 	  	user_email = current_user.email

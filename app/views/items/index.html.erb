@@ -2,15 +2,17 @@
 <h1 onload="ya()"></h1>
 <div id='categories_bar'>
 	<ul>
-		<li class="categories"><a href="/categories/">Appliances</a></li>
-		<li class="categories"><a href="/categories/">Furniture</a></li>
-		<li class="categories"><a href="/categories/">Camping</a></li>
-		<li class="categories"><a href="/categories/">Clothing</a></li>
-		<li class="categories"><a href="/categories/">Books</a></li>
-		<li class="categories"><a href="/categories/">Gaming</a></li>
-		<li class="categories"><a href="/categories/">Computers</a></li>
-		<li class="categories"><a href="/categories/">Electronics</a></li>
-		<li class="categories"><a href="/categories/">Autos / Bikes</a></li>
+		<% if @categories %>
+			<% @categories.each do |category| %>
+				<li class="categories">
+					<form action="/results" method="post">
+						<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+						<input type="hidden" name="catName" value="<%= category.id %>">
+						<a href="#" onclick="$(this).closest('form').submit(); return false;"><%= category.name.capitalize %></a>
+					</form>
+				</li>
+			<% end %>
+		<% end %>
 	</ul>
 </div>
 
@@ -29,7 +31,7 @@
             <div class="col-xs-4"><a href="#1"><img src="https://conciergenews.files.wordpress.com/2010/07/camiseta_adidas_argentina.png" class="img-responsive"></a></div>
           </div>
           <div class="item">
-            <div class="col-xs-4"><a href="#1"><img src="http://g-ecx.images-amazon.com/images/G/01/aplus/detail-page/PS4_lg.jpg" class="img-responsive"></a></div>
+            <div class="col-xs-4"><a href="#1"><img src="http://www.getonthewater.com.au/wp-content/uploads/2013/09/caro2-340x255.png" class="img-responsive"></a></div>
           </div>
           <div class="item">
             <div class="col-xs-4"><a href="#1"><img src="http://www.bargainblessings.com/wp-content/uploads/2013/09/coleman-tent.png" class="img-responsive"></a></div>
@@ -40,55 +42,78 @@
       </div>
 
 
+
 	
+
+
 	<div id="lol">
+		<div class="col-md-12 rec">
+		<h3 style="color: white">Recomended Items</h3>
+		<% if @search %>
+			<% @search.each do |s| %>
+					<div class="col-md-3 ">
+						<div class="well box clearfix">
+							<a href="/items/<%= s.id %>">
+								<img src="<%= s.image %>">
+								<h4><%= s.name %></h4>
+								<p><%= s.description %></p>
+								<p>$ <%= s.price %> /day</p>
+								<form action="/results" method="post">
+									<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+									<input type="hidden" name="catName" value="<%= s.category.id %>">
+									<a href="#" onclick="$(this).closest('form').submit(); return false;"><%= s.category.name.capitalize %></a>
 
-	<% if  @recommended %>
-	<h3 id="rec">Recommended for you</h3>
-		<% @recommended.each do |r| %>
-			<div id="recommended">
-				<div><img style="width: 180px; height: 150px;" src="https://www.microsoft.com/nz/windows/products/windowsvista/joinred/images/pclarge2.png"></div>
-				<div>
-				<h4><%= r.name %></h4>
-				<h5><%= r.price%></h5>
-				 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add To Cart</button>
-
-				<div class="modal fade" id="myModal" role="dialog">
-				    <div class="modal-dialog">
-				    
-				      <!-- Modal content-->
-				      <div class="modal-content">
-				        <div class="modal-header">
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
-				          <h4 class="modal-title">Modal Header</h4>
-				        </div>
-				        <div class="modal-body">
-				          <form action="/add_to_cart" method="post">
-				  			<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>"></input>
-				  			<input type="hidden" name="item_id" value="<%=r.id%>">
-				<input type="date" name="start"></td>
-				 <input type="number" name="days"></td>
-
-				<input type="submit" name="submit" value="Add to Cart">
-				  </form>
-				        </div>
-				        <div class="modal-footer">
-				          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        </div>
-				      </div>
-				      
-				    </div>
-				  </div>
-				</div>
-			</div>
-		<% end %>
+								</form>
+							</a>
+							<br>
+							<button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target=".promo<%=s.id %>">Add To Cart</button>
+						</div>
+						<div class="modal fade promo<%=s.id %>" id="myModal" role="dialog">
+						    <div class="modal-dialog">
+						      <!-- Modal content-->
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Choose a date and the number of days</h4>
+						        </div>
+						        <form class="form" action="/add_to_cart" method="post">
+							        <div class="modal-body">
+							            <fieldset class="form-group">
+								  			<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+								  		</fieldset>
+								  		<fieldset class="form-group">
+								  			<input type="hidden" name="item_id" value="<%=s.id%>">
+								  		</fieldset>
+								  		<fieldset class="form-group">
+								  			<label>Date</label>
+											<input class="form-control" type="date" name="start">
+										</fieldset>
+										<fieldset class="form-group">
+											<label>Days</label>
+											<input class="form-control" type="number" name="days">
+										</fieldset>
+							        </div>
+							        <div class="modal-footer">
+							          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							          <input class="btn btn-success" type="submit" name="submit" value="Add to Cart">
+							        </div>
+						        </form>
+						      </div>
+						    </div>
+				  		</div>
+					</div>
+			<% end %>
+		<% end %>	
 	</div>
-	<% end %>
+	</div>
+	
 	
 
 
 	<% if @items %>
 	<div id="latest_wrapper">
+	<div class="col-md-12">
+	<br>
 		<h3>Latest Added Items </h3>
 		<ul >
 			<% @items.each do |i| %>
@@ -102,6 +127,7 @@
 			<% end %>
 		</ul>
 	<% end %>
+	</div>
 	</div>
 
 
