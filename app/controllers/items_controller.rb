@@ -3,8 +3,12 @@ class ItemsController < ApplicationController
 
   def index
   	@categories = Category.all
-  	@recommended = Item.all.limit(3)
-  	@items = Item.all.order("id desc").limit(6)
+  	@search = Item.limit(4).order("RANDOM()")
+  	@items = Item.all.order("id desc").limit(10)
+  end
+
+  def show
+    @item = Item.find(params[:id])
   end
 
   def create
@@ -40,6 +44,11 @@ class ItemsController < ApplicationController
   def add_to_cart
     Cart.create(item:Item.find(params[:item_id]), days:params[:days], start:params[:start])
     redirect_to "/items"
+  end
+
+  def edit_cart
+    Cart.find(params[:id]).update(days: params[:days], start: params[:start])
+    redirect_to "/charges/new"
   end
 
 

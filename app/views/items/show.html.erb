@@ -1,2 +1,63 @@
-<h1>Items#show</h1>
-<p>Find me in app/views/items/show.html.erb</p>
+<div class="container">
+	<br>
+	<% if @item %>
+		<div class="col-md-12">
+			<div class="col-md-4">
+			
+				<h1><%= @item.name %></h1>
+				<br>
+				<h4><b>Description:</b> <%= @item.description %></h4>
+				<h4><b>Price:</b> <%= @item.price %></h4>
+				<h4><b>Category:</b> <%= @item.category.name.capitalize %></h4>
+				<h4><b>Owner:</b> <%= @item.user.first_name %></h4>
+			
+			</div>
+			<div class="col-md-2 col-md-offset-5">
+				<img style="height: 200px;width:200px; margin:30px 150px 0 0" src="<%= @item.image %>">
+			</div>
+			<button style="margin-top:30px" class="col-md-12 btn btn-success" data-toggle="modal" data-target=".promo<%=@item.id %>"" >Add to Cart</button>
+			<div class="modal fade promo<%= @item.id %>" id="myModal" role="dialog">
+			    <div class="modal-dialog">
+			      <!-- Modal content-->
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			          <h4 class="modal-title">Choose a date and the number of days</h4>
+			        </div>
+			        <form class="form" action="/add_to_cart" method="post">
+				        <div class="modal-body">
+				            <fieldset class="form-group">
+					  			<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+					  		</fieldset>
+					  		<fieldset class="form-group">
+					  			<input type="hidden" name="item_id" value="<%=@item.id%>">
+					  		</fieldset>
+					  		<fieldset class="form-group">
+					  			<label>Date</label>
+								<input class="form-control" type="date" name="start">
+							</fieldset>
+								<label>Days</label>
+							<fieldset class="form-group">
+								<input class="form-control" type="number" name="days">
+							</fieldset>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				          <input class="btn btn-success" type="submit" name="submit" value="Add to Cart">
+				        </div>
+			        </form>
+			      </div>
+			    </div>
+	  		</div>
+	  		<!-- Reviews -->
+<!-- 	  		<h3>Reviews</h3>
+	  		<form>
+	  			<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+	  			<textarea name="review"></textarea>
+	  			<input type="submit" value="Send">
+	  		</form> -->
+	  		
+
+		</div>
+	<% end %>
+</div>
