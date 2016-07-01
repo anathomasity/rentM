@@ -6,6 +6,7 @@
       </div>
     <% end %>
     <label class="amount">
+    
     <% sum = 0 %>
     <% @cart.each do |c|%>
     <p><%= c.item.name %> <%= c.item.price %> <%= c.days %><% sum += c.item.price * c.days %></p>

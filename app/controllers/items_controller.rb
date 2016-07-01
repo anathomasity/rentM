@@ -1,6 +1,5 @@
 class ItemsController < ApplicationController
 
-
   def index
   	@categories = Category.all
   	@recommended = Item.all.limit(3)

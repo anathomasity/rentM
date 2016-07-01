@@ -39,6 +39,7 @@ gem 'mail'
 
 gem 'carrierwave'
 
+gem "figaro"
 
 gem 'rufus-scheduler'
 # Use Unicorn as the app server
